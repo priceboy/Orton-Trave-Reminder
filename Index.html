@@ -1,131 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Travel Notification System</title>
+<title>Travel WhatsApp Notification System</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 body {
-    background: #0f172a;
+    font-family:'Inter',sans-serif;
+    background: linear-gradient(135deg, #0f172a, #020617);
+}
+
+.card {
+    background: rgba(15,23,42,0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 2rem;
+    max-width: 5xl;
+    margin: auto;
+}
+
+.label {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.input {
+    background: #1e293b;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+textarea.input {
+    resize: none;
+    min-height: 8rem;
+}
+
+.button-gradient {
+    background: linear-gradient(to right, #3b82f6, #1e3a8a);
+    color: white;
+    font-weight: 500;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.button-gradient:hover {
+    background: linear-gradient(to right, #2563eb, #1e40af);
+}
+
+.autofilled {
+    border-color: #22c55e !important;
+    background-color: #052e16 !important;
 }
 </style>
 
 </head>
 
-<body class="text-white">
+<body class="text-white min-h-screen flex items-center justify-center p-6">
 
-<div class="max-w-3xl mx-auto mt-10 p-6 bg-slate-900 rounded-xl shadow-lg">
+<div class="card">
 
-<h1 class="text-2xl font-bold mb-6 text-center">
-Travel WhatsApp Notification System
-</h1>
+<!-- Header with Logo -->
+<div class="flex items-center mb-6">
+    <!-- Logo -->
+    <img src="logo.png" alt="Agency Logo" class="h-12 w-12 rounded-full mr-4">
 
-<!-- INPUT SECTION -->
+    <!-- Header Text -->
+    <h1 class="text-2xl font-semibold flex-1 text-center">
+        Travel WhatsApp Notification System
+    </h1>
+</div>
+<!-- Upload Section -->
+<div class="mb-6">
+    <div class="label">Upload Ticket (PDF or Image)</div>
+    <input type="file" id="ticketFile" accept=".pdf,.jpg,.jpeg,.png" class="input">
+    <button onclick="uploadTicket()" class="button-gradient mt-3 w-full">Extract Ticket Information</button>
+</div>
 
+<!-- Customer Info -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+<div>
+    <div class="label">Customer Name</div>
+    <input id="name" class="input">
+</div>
+
+<div>
+    <div class="label">Phone Number</div>
+    <input id="phone" class="input">
+</div>
+
+<div>
+    <div class="label">Airline</div>
+    <input id="airline" class="input">
+</div>
+
+<div>
+    <div class="label">Flight Number</div>
+    <input id="flight" class="input">
+</div>
+
+<div>
+    <div class="label">Departure Airport</div>
+    <input id="departure" class="input">
+</div>
+
+<div>
+    <div class="label">Arrival Airport</div>
+    <input id="arrival" class="input">
+</div>
+
+<div>
+    <div class="label">Departure Time</div>
+    <input id="departureTime" type="datetime-local" class="input" onchange="calculateCheckin()">
+</div>
+
+<div>
+    <div class="label">Check-in Time (Auto)</div>
+    <input id="checkinTime" class="input" readonly>
+</div>
+
+<div>
+    <div class="label">Cabin Baggage</div>
+    <input id="cabin" class="input">
+</div>
+
+<div>
+    <div class="label">Checked Baggage</div>
+    <input id="checked" class="input">
+</div>
+
+</div>
+
+<!-- Message -->
 <div class="mb-4">
-
-<label class="block mb-2">Enter PNR</label>
-
-<div class="flex gap-2">
-
-<input 
-id="pnr"
-type="text"
-placeholder="Example: ABC123"
-class="w-full p-3 rounded bg-slate-800 border border-slate-600">
-
-<button 
-onclick="fetchPNR()"
-class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">
-
-Fetch
-
-</button>
-
+    <div class="label">WhatsApp Message</div>
+    <textarea id="message" class="input"></textarea>
 </div>
 
-</div>
-
-
-<div class="mb-4">
-
-<label class="block mb-2">OR Upload Ticket</label>
-
-<input 
-type="file"
-class="w-full p-2 bg-slate-800 rounded border border-slate-600">
-
-</div>
-
-
-<hr class="my-6 border-slate-700">
-
-
-<!-- PASSENGER INFO -->
-
-<h2 class="text-xl mb-4">Passenger Information</h2>
-
+<!-- Buttons -->
 <div class="grid grid-cols-2 gap-4">
-
-<input id="name" placeholder="Customer Name"
-class="p-2 bg-slate-800 rounded border border-slate-600">
-
-<input id="phone" placeholder="Phone Number"
-class="p-2 bg-slate-800 rounded border bordera border-slate-600">
-
-<input id="departure" placeholder="Departure Airport"
-class="p-2 bg-slate-800 rounded border border-slate-600">
-
-<input id="arrival" placeholder="Arrival Airport"
-class="p-2 bg-slate-800 rounded border border-slate-600">
-
-<input id="flight" placeholder="Flight Number"
-class="p-2 bg-slate-800 rounded border border-slate-600">
-
-<input id="departureTime" type="datetime-local"
-class="p-2 bg-slate-800 rounded border border-slate-600"
-onchange="calculateCheckin()">
-
-<input id="checkinTime" placeholder="Check-in Time"
-class="p-2 bg-slate-700 rounded border border-slate-600" readonly>
-
+    <button onclick="generateMessage()" class="button-gradient">Generate Message</button>
+    <button onclick="sendWhatsApp()" class="button-gradient">Send WhatsApp</button>
 </div>
 
-
-<hr class="my-6 border-slate-700">
-
-
-<!-- MESSAGE PREVIEW -->
-
-<h2 class="text-xl mb-4">WhatsApp Message Preview</h2>
-
-<textarea
-id="message"
-class="w-full h-40 p-3 bg-slate-800 rounded border border-slate-600">
-</textarea>
-
-
-<button
-onclick="generateMessage()"
-class="mt-4 bg-green-600 px-4 py-2 rounded hover:bg-green-700">
-
-Generate Message
-
-</button>
-
-
-<button
-onclick="sendWhatsApp()"
-class="mt-4 ml-4 bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">
-
-Send WhatsApp
-
-</button>
-
+<!-- Status -->
+<div id="status" class="text-center mt-4 text-sm text-slate-400">System Ready</div>
 
 </div>
 
