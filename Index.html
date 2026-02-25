@@ -4,165 +4,277 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Travel WhatsApp Notification System</title>
+
+<title>Travel Notification System</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-body {
-    font-family:'Inter',sans-serif;
-    background: linear-gradient(135deg, #0f172a, #020617);
+
+body{
+font-family:'Inter',sans-serif;
+background: linear-gradient(135deg,#0f172a,#020617);
 }
 
-.card {
-    background: rgba(15,23,42,0.85);
-    backdrop-filter: blur(12px);
-    border-radius: 1rem;
-    border: 1px solid rgba(255,255,255,0.05);
-    padding: 2rem;
-    max-width: 5xl;
-    margin: auto;
+.card{
+background: rgba(15,23,42,0.9);
+backdrop-filter: blur(12px);
+border-radius:16px;
+padding:28px;
+max-width:1100px;
+width:100%;
+box-shadow:0 0 40px rgba(0,0,0,0.4);
 }
 
-.label {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    margin-bottom: 0.25rem;
-    display: block;
+.input{
+background:#1e293b;
+border:1px solid rgba(255,255,255,0.08);
+border-radius:12px;
+padding:12px;
+width:100%;
 }
 
-.input {
-    background: #1e293b;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 0.75rem;
-    padding: 0.75rem;
-    width: 100%;
-    transition: all 0.2s ease;
+.input:focus{
+outline:none;
+border-color:#3b82f6;
 }
 
-.input:focus {
-    outline: none;
-    border-color: #3b82f6;
+.label{
+font-size:12px;
+color:#94a3b8;
+margin-bottom:4px;
 }
 
-textarea.input {
-    resize: none;
-    min-height: 8rem;
+.button{
+background: linear-gradient(to right,#3b82f6,#1e3a8a);
+border-radius:12px;
+padding:12px;
+font-weight:500;
+transition:0.2s;
 }
 
-.button-gradient {
-    background: linear-gradient(to right, #3b82f6, #1e3a8a);
-    color: white;
-    font-weight: 500;
-    padding: 0.75rem;
-    border-radius: 0.75rem;
-    transition: all 0.2s ease;
-    text-align: center;
+.button:hover{
+background: linear-gradient(to right,#2563eb,#1e40af);
 }
 
-.button-gradient:hover {
-    background: linear-gradient(to right, #2563eb, #1e40af);
+.autofilled{
+border-color:#22c55e !important;
+background:#052e16 !important;
 }
 
-.autofilled {
-    border-color: #22c55e !important;
-    background-color: #052e16 !important;
-}
 </style>
 
 </head>
 
-<body class="text-white min-h-screen flex items-center justify-center p-6">
+<body class="text-white min-h-screen flex items-center justify-center p-4">
+
 
 <div class="card">
 
-<!-- Header with Logo -->
+<!-- HEADER -->
+
 <div class="flex items-center mb-6">
-    <!-- Logo -->
-    <img src="logo.png" alt="Agency Logo" class="h-12 w-12 rounded-full mr-4">
 
-    <!-- Header Text -->
-    <h1 class="text-2xl font-semibold flex-1 text-center">
-        Travel WhatsApp Notification System
-    </h1>
+<img src="logo.png" class="h-12 mr-4">
+
+<h1 class="text-xl font-semibold">
+Travel Notification System
+</h1>
+
 </div>
-<!-- Upload Section -->
+
+
+
+<!-- UPLOAD -->
+
 <div class="mb-6">
-    <div class="label">Upload Ticket (PDF or Image)</div>
-    <input type="file" id="ticketFile" accept=".pdf,.jpg,.jpeg,.png" class="input">
-    <button onclick="uploadTicket()" class="button-gradient mt-3 w-full">Extract Ticket Information</button>
+
+<div class="label">Upload Ticket</div>
+
+<input type="file"
+id="ticketFile"
+class="input">
+
+<button onclick="uploadTicket()"
+class="button mt-3 w-full">
+
+Extract Ticket Information
+
+</button>
+
 </div>
 
-<!-- Customer Info -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+
+<!-- CUSTOMER INFO -->
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
 
 <div>
-    <div class="label">Customer Name</div>
-    <input id="name" class="input">
+
+<div class="label">Passenger Name</div>
+
+<input id="name" class="input">
+
 </div>
+
 
 <div>
-    <div class="label">Phone Number</div>
-    <input id="phone" class="input">
+
+<div class="label">Phone Number</div>
+
+<input id="phone" class="input">
+
 </div>
+
 
 <div>
-    <div class="label">Airline</div>
-    <input id="airline" class="input">
+
+<div class="label">PNR</div>
+
+<input id="pnr" class="input">
+
 </div>
+
 
 <div>
-    <div class="label">Flight Number</div>
-    <input id="flight" class="input">
+
+<div class="label">Ticket Number</div>
+
+<input id="ticketNumber" class="input">
+
 </div>
+
 
 <div>
-    <div class="label">Departure Airport</div>
-    <input id="departure" class="input">
+
+<div class="label">Airline</div>
+
+<input id="airline" class="input">
+
 </div>
+
 
 <div>
-    <div class="label">Arrival Airport</div>
-    <input id="arrival" class="input">
+
+<div class="label">Flight Number</div>
+
+<input id="flight" class="input">
+
 </div>
+
 
 <div>
-    <div class="label">Departure Time</div>
-    <input id="departureTime" type="datetime-local" class="input" onchange="calculateCheckin()">
+
+<div class="label">Departure Airport</div>
+
+<input id="departure" class="input">
+
 </div>
+
 
 <div>
-    <div class="label">Check-in Time (Auto)</div>
-    <input id="checkinTime" class="input" readonly>
+
+<div class="label">Arrival Airport</div>
+
+<input id="arrival" class="input">
+
 </div>
+
 
 <div>
-    <div class="label">Cabin Baggage</div>
-    <input id="cabin" class="input">
+
+<div class="label">Departure Time</div>
+
+<input id="departureTime"
+type="datetime-local"
+class="input"
+onchange="calculateCheckin()">
+
 </div>
+
 
 <div>
-    <div class="label">Checked Baggage</div>
-    <input id="checked" class="input">
-</div>
+
+<div class="label">Check-in Time</div>
+
+<input id="checkinTime"
+class="input"
+readonly>
 
 </div>
 
-<!-- Message -->
-<div class="mb-4">
-    <div class="label">WhatsApp Message</div>
-    <textarea id="message" class="input"></textarea>
+
+<div>
+
+<div class="label">Cabin Baggage</div>
+
+<input id="cabin" class="input">
+
 </div>
 
-<!-- Buttons -->
-<div class="grid grid-cols-2 gap-4">
-    <button onclick="generateMessage()" class="button-gradient">Generate Message</button>
-    <button onclick="sendWhatsApp()" class="button-gradient">Send WhatsApp</button>
+
+<div>
+
+<div class="label">Checked Baggage</div>
+
+<input id="checked" class="input">
+
 </div>
 
-<!-- Status -->
-<div id="status" class="text-center mt-4 text-sm text-slate-400">System Ready</div>
+
+</div>
+
+
+
+<!-- MESSAGE -->
+
+<div class="mt-6">
+
+<div class="label">WhatsApp Message</div>
+
+<textarea id="message"
+class="input h-40">
+
+</textarea>
+
+</div>
+
+
+
+<!-- BUTTONS -->
+
+<div class="grid grid-cols-2 gap-4 mt-4">
+
+<button onclick="generateMessage()"
+class="button">
+
+Generate Message
+
+</button>
+
+
+<button onclick="sendWhatsApp()"
+class="button">
+
+Send WhatsApp
+
+</button>
+
+</div>
+
+
+
+<div id="status"
+class="text-center mt-4 text-slate-400">
+
+Ready
+
+</div>
+
 
 </div>
 
