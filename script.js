@@ -1,70 +1,143 @@
-
-function fetchPNR()
+// SIMULATED EXTRACTION
+function uploadTicket()
 {
-    // TEMPORARY DEMO DATA
-    document.getElementById("name").value = "John Doe";
-    document.getElementById("phone").value = "237670000000";
-    document.getElementById("departure").value = "Douala (DLA)";
-    document.getElementById("arrival").value = "Paris (CDG)";
-    document.getElementById("flight").value = "ET908";
+let status = document.getElementById("status");
 
-    document.getElementById("departureTime").value = "2026-02-24T14:30";
+status.innerText="Extracting ticket...";
 
-    calculateCheckin();
-    generateMessage();
+setTimeout(()=>{
+
+document.getElementById("name").value="John Doe";
+document.getElementById("phone").value="670000000";
+document.getElementById("pnr").value="ABC123";
+document.getElementById("ticketNumber").value="0711234567890";
+document.getElementById("airline").value="Ethiopian Airlines";
+document.getElementById("flight").value="ET908";
+document.getElementById("departure").value="Douala (DLA)";
+document.getElementById("arrival").value="Paris (CDG)";
+document.getElementById("departureTime").value="2026-03-10T14:30";
+document.getElementById("cabin").value="7KG";
+document.getElementById("checked").value="23KG";
+
+calculateCheckin();
+
+highlight();
+
+status.innerText="Ticket extracted successfully";
+
+},1000);
+
 }
 
+
+// CALCULATE CHECKIN
 
 function calculateCheckin()
 {
-    let departure = document.getElementById("departureTime").value;
 
-    if (!departure) return;
+let dep=document.getElementById("departureTime").value;
 
-    let date = new Date(departure);
+if(!dep)return;
 
-    date.setHours(date.getHours() - 4);
+let d=new Date(dep);
 
-    let formatted = date.toISOString().slice(0,16);
+d.setHours(d.getHours()-4);
 
-    document.getElementById("checkinTime").value = formatted;
+document.getElementById("checkinTime").value=
+d.toISOString().slice(0,16);
+
 }
 
+
+// GENERATE MESSAGE
 
 function generateMessage()
 {
-    let name = document.getElementById("name").value;
-    let flight = document.getElementById("flight").value;
-    let departure = document.getElementById("departure").value;
-    let arrival = document.getElementById("arrival").value;
-    let departureTime = document.getElementById("departureTime").value;
-    let checkinTime = document.getElementById("checkinTime").value;
 
-    let message =
+let name=nameField("name");
+let airline=nameField("airline");
+let flight=nameField("flight");
+let dep=nameField("departure");
+let arr=nameField("arrival");
+let time=nameField("departureTime");
+let check=nameField("checkinTime");
+let cabin=nameField("cabin");
+let checked=nameField("checked");
+
+let msg=
 `Dear ${name},
 
-Your flight ${flight}
-From: ${departure}
-To: ${arrival}
+Flight: ${airline} ${flight}
+Route: ${dep} → ${arr}
 
-Departure: ${departureTime}
+Departure: ${time}
+Check-in opens: ${check}
 
-Check-in opens at: ${checkinTime}
+Cabin baggage: ${cabin}
+Checked baggage: ${checked}
 
-Please arrive early.
+Thank you.`;
 
-Safe travels.`;
+document.getElementById("message").value=msg;
 
-    document.getElementById("message").value = message;
 }
 
 
+// SEND WHATSAPP
+
 function sendWhatsApp()
 {
-    let phone = document.getElementById("phone").value;
-    let message = document.getElementById("message").value;
 
-    let url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+let phone=cleanPhone(nameField("phone"));
 
-    window.open(url, '_blank');
+let message=document.getElementById("message").value;
+
+if(!phone)return;
+
+let url=
+`https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+window.open(url,"_blank");
+
+}
+
+
+// CLEAN PHONE
+
+function cleanPhone(phone)
+{
+
+phone=phone.replace(/\D/g,'');
+
+if(phone.startsWith("0"))
+phone=phone.substring(1);
+
+if(!phone.startsWith("237"))
+phone="237"+phone;
+
+return phone;
+
+}
+
+
+// HELPER
+
+function nameField(id)
+{
+return document.getElementById(id).value;
+}
+
+
+// HIGHLIGHT AUTO
+
+function highlight()
+{
+
+document.querySelectorAll("input").forEach(input=>{
+
+if(input.value)
+input.classList.add("autofilled");
+
+});
+
 }
